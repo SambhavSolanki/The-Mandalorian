@@ -1,6 +1,6 @@
 class config:
     def __init__(self):
-        self.__framerate = 8
+        self.__framerate = 15
         self.__height = 29
         self.__length = 130
         self.__gameLength = 1000
@@ -11,10 +11,10 @@ class config:
         return self.__framerate
 
     def incframerate(self):
-        self.__framerate = 20
+        self.__framerate = 30
 
     def decframerate(self):
-        self.__framerate = 8
+        self.__framerate = 15
 
     def dimensions(self):
         dim = [self.__height,self.__length]

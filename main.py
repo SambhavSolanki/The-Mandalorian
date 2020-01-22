@@ -62,7 +62,7 @@ while Stats.GetDistance() + Hero.GetPos()[0] < Config.length():
     cmove(0,0)
     if command is 'q' or command is 'Q':
         exit()
-    elif command is ' ' and time.time() - lt > 5 and Stats.GetScore() + Stats.GetDistance()+Hero.GetPos()[0] < Config.winCond():
+    elif command is ' ' and time.time() - lt > 4 and Stats.GetScore() + Stats.GetDistance()+Hero.GetPos()[0] < Config.winCond():
         Bullet.append(bullet(Hero))
         lt = time.time()
     elif (command is 'e' or command is 'E') and time.time() - st > 60:
@@ -71,7 +71,7 @@ while Stats.GetDistance() + Hero.GetPos()[0] < Config.length():
     else:
         Hero.MoveMandalorian(command)
 
-    if (i+10)%40 == 0 and Stats.GetScore() + Stats.GetDistance()+Hero.GetPos()[0] < Config.winCond():
+    if (i+10)%20 == 0 and Stats.GetScore() + Stats.GetDistance()+Hero.GetPos()[0] < Config.winCond():
         x = randint(1,4)
         if x%4 == 0:
             Obstacles.append(obstaclesH(Config.dimensions()[0]-4))
@@ -92,7 +92,7 @@ while Stats.GetDistance() + Hero.GetPos()[0] < Config.length():
             Obstacles.remove(l)
         l.AddObject(game_grid)
 
-    if (i+1)%200 == 0 and Stats.GetScore() + Stats.GetDistance()+Hero.GetPos()[0] < Config.winCond():
+    if (i+1)%300 == 0 and Stats.GetScore() + Stats.GetDistance()+Hero.GetPos()[0] < Config.winCond():
         Speed = speed(Config.dimensions()[0]-4)
         for l in Coins:
             if l.Overlap(Speed):
@@ -107,9 +107,13 @@ while Stats.GetDistance() + Hero.GetPos()[0] < Config.length():
         for l in Coins:
             if l.Overlap(Speed):
                 Speed = None
+        if not Speed:
+            pass
         for l in Obstacles:
             if l.Overlap(Speed):
                 Speed = None
+        if not Speed:
+            pass
         if Speed.GetPos()[1] < 0:
             Speed = None
         if not Speed:
@@ -200,13 +204,15 @@ drag = dragon(Config.dimensions()[0])
 Bulletd = []
 Hero.BossLevel()
 i = 0
+lt = time.time()
 while time.time() - t < Config.time() and BossHP > 0:
     cmove(Config.dimensions()[0]+6,0)
     command = uinput(1/Config.framerate())
     cmove(0,0)
     if command is 'q' or command is 'Q':
         exit()
-    elif command is ' ':
+    elif command is ' ' and time.time() - lt > 0.3:
+        lt = time.time()
         Bullet.append(bullet(Hero))
     else:
         Hero.MoveMandalorian(command)
@@ -226,29 +232,22 @@ while time.time() - t < Config.time() and BossHP > 0:
             continue
         l.AddObject(game_grid)
 
-    if (i+1)%8 == 0:
+    if (i+1)%10 == 0:
         Bulletd.append(bulletd(drag))
 
     for l in Bulletd:
         falg = 0
         for k in Bullet:
-            if l.GetPos()[0] == k.GetPos()[0] and l.GetPos()[1] == k.GetPos()[1]:
+            if l.GetPos()[0] == k.GetPos()[0] and l.GetPos()[1] == k.GetPos()[1] - 38:
                 Bulletd.remove(l)
                 Bullet.remove(k)
                 flag = 1
                 break
         if flag == 1:
             continue
+
+    for l in Bulletd:
         l.MoveLeft()
-        flag = 0
-        for k in Bullet:
-            if l.GetPos()[0] == k.GetPos()[0] and l.GetPos()[1] == k.GetPos()[1]:
-                Bulletd.remove(l)
-                Bullet.remove(k)
-                flag = 1
-                break
-        if flag == 1:
-            continue
         if l.GetPos()[1] < 0:
             Bulletd.remove(l)
             continue

@@ -37,6 +37,8 @@ class bulletd(objects):
         self._xsize = 1
         self._ysize = 1
 
+    def MoveRight(self):
+        self._xcoordinate = self.GetPos()[1] + 3
 
 
 
